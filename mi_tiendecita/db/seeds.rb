@@ -13,4 +13,3 @@ end
 
 seed_product('Inka Kola', 'ik01', 3_00, 'La gaseosa del Peru', store)
 seed_product('Ajinomen', 'aj22', 1_50, 'La mejor sopa instantanea', store)
-

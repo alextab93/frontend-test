@@ -10,7 +10,7 @@ class Api::V1::UsersController < ApiController
   def create
     @user = User.create(user_params)
     if @user.valid?
-      token = encode_token({ user_id: @user.id })
+      token = encode_token(@user.id )
       render json: { user: @user, token: token }
     else
       render json: { error: 'Invalid username or password' }
@@ -22,7 +22,7 @@ class Api::V1::UsersController < ApiController
     @user = User.find_by(email: params[:email])
 
     if @user&.authenticate(params[:password])
-      token = encode_token({ user_id: @user.id })
+      token = encode_token(@user.id )
       render json: { user: @user, token: token }
     else
       render json: { error: 'Invalid username or password' }

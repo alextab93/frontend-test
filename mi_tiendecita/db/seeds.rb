@@ -1,15 +1,20 @@
-store = Store.create!(name: 'La tiendita de Don Pepe', address: 'Calle 4, Lima')
-
-User.create!(email: 'user@test.com', password: 'pass123', first_name: 'User', last_name: 'Test', store: store)
-
-def seed_product(name, code, price, description, store)
-  Product.create!(name: name,
-                  code: code,
-                  price: price,
-                  description: description,
+def seed_product(store)
+  Product.create!(name: Faker::Commerce.product_name,
+                  code: Faker::Code.npi,
+                  price: rand(300..15_000),
+                  description: Faker::Lorem.sentence,
                   store: store,
-                  image_url: "https://robohash.org/#{(name + code).hash}.png?size=150x150&set=set5")
+                  image_url: Faker::LoremPixel.image(size: '150x150', is_gray: false, category: 'food'))
 end
 
-seed_product('Inka Kola', 'ik01', 3_00, 'La gaseosa del Peru', store)
-seed_product('Ajinomen', 'aj22', 1_50, 'La mejor sopa instantanea', store)
+4.times do |t|
+  store = Store.create!(name: Faker::Company.name, address: Faker::Address)
+  User.create(email: "store_#{t + 1}@test.com",
+              password: 'pass123',
+              first_name: Faker::Name.first_name,
+              last_name: Faker::Name.last_name,
+              store: store)
+  rand(3..10).times do
+    seed_product(store)
+  end
+end

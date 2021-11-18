@@ -7,7 +7,7 @@ class ApiController < ActionController::Base
     exp = TIME_NOW + expiry_after_days * 24 * 3600
     iat = TIME_NOW
     payload = { user_id: user_id, exp: exp, iat: iat }
-    JWT.encode(payload, ENV['JWT_SECRET'])
+    JWT.encode(payload, ENV['API_SECRET'])
   end
 
   def auth_header
@@ -20,7 +20,7 @@ class ApiController < ActionController::Base
       token = auth_header.split(' ')[1]
       # header: { 'Authorization': 'Bearer <token>' }
       begin
-        JWT.decode(token, ENV['JWT_SECRET'], true, algorithm: 'HS256')
+        JWT.decode(token, ENV['API_SECRET'], true, algorithm: 'HS256')
       rescue JWT::DecodeError
         nil
       end

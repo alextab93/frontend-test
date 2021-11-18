@@ -1,11 +1,12 @@
 class ApiController < ActionController::Base
   skip_before_action :verify_authenticity_token
 
-  EXPIRY_BASE = Time.now.to_i
+  TIME_NOW = Time.now.to_i
 
   def encode_token(user_id, expiry_after_days = 7)
-    exp = EXPIRY_BASE + expiry_after_days * 24 * 3600
-    payload = { user_id: user_id, exp: exp }
+    exp = TIME_NOW + expiry_after_days * 24 * 3600
+    iat = TIME_NOW
+    payload = { user_id: user_id, exp: exp, iat: iat }
     JWT.encode(payload, ENV['JWT_SECRET'])
   end
 

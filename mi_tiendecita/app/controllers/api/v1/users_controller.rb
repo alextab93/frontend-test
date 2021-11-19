@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
 class Api::V1::UsersController < ApiController
-  before_action :authorized, only: %i[show auto_login]
+  before_action :authorized, only: %i[show index logout]
 
   def show
-    @users = User.all
-    render json: { users: @users }
   end
 
   # REGISTER
@@ -31,8 +29,9 @@ class Api::V1::UsersController < ApiController
     end
   end
 
-  def auto_login
-    render json: @user
+  def logout
+    @user = nil
+    render json: { message: 'Logged out' }
   end
 
   private

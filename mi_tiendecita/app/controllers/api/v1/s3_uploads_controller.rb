@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 class Api::V1::S3UploadsController < ApiController
+  before_action :authorized
+
   def set_s3_direct_post
-    file_name = params[:file_name]
     directory = params[:directory]
     random_path = SecureRandom.uuid
-    key = "uploads/#{directory}/#{random_path}/#{file_name}"
+    key = "uploads/#{directory}/#{random_path}"
 
     signer = Aws::S3::Presigner.new
     post_url = signer.presigned_url(:put_object,

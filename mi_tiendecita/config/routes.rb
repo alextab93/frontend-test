@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
-  namespace :api do
+  namespace :api, defaults: { format: 'json' } do
     namespace :v1 do
-      resource :users, only: %i[show]
-
       resources :stores, only: %i[index show update create] do
         resources :products, only: %i[index create]
       end
@@ -14,7 +12,8 @@ Rails.application.routes.draw do
       # auth
       post '/signup', to: 'users#create'
       post '/login', to: 'users#login'
-      get '/auto_login', to: 'users#auto_login'
+      post '/logout', to: 'users#logout'
+      get '/current_user', to: 'users#show'
     end
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

@@ -8,7 +8,7 @@ def seed_product(store)
 end
 
 4.times do |t|
-  store = Store.create!(name: Faker::Company.name, address: Faker::Address)
+  store = Store.create!(name: Faker::Company.name, address: Faker::Address.street_address)
   User.create(email: "store_#{t + 1}@test.com",
               password: 'pass123',
               first_name: Faker::Name.first_name,

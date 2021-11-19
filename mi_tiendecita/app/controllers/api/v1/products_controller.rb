@@ -15,9 +15,9 @@ class Api::V1::ProductsController < ApiController
     @product = Product.new(product_params.merge({ store_id: params[:store_id] }))
 
     if @product.save
-      render json: { product: @product }
+      render json: { product: @product }, status: :created
     else
-      render json: { errors: @product.errors.messages }
+      render json: { errors: @product.errors.messages }, status: :bad_request
     end
   end
 
@@ -27,7 +27,7 @@ class Api::V1::ProductsController < ApiController
     if @product.update(product_params)
       render json: { product: @product }
     else
-      render json: { errors: @product.errors.messages }
+      render json: { errors: @product.errors.messages }, status: :bad_request
     end
   end
 
@@ -37,7 +37,7 @@ class Api::V1::ProductsController < ApiController
     if @product.destroy
       render json: { message: 'Product deleted successfully' }
     else
-      render json: { errors: @product.errors.messages }
+      render json: { errors: @product.errors.messages }, status: :bad_request
     end
   end
 

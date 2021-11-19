@@ -1,5 +1,7 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
+require 'support/factory_bot'
+require 'support/authentication'
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../config/environment', __dir__)
 # Prevent database truncation if the environment is production
@@ -36,13 +38,14 @@ RSpec.configure do |config|
 
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
+  config.include Authentication, type: :request
+
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
-end
-
-Shoulda::Matchers.configure do |config|
-  config.integrate do |with|
-    with.test_framework :rspec
-    with.library :rails
+  Shoulda::Matchers.configure do |conf|
+    conf.integrate do |with|
+      with.test_framework :rspec
+      with.library :rails
+    end
   end
 end

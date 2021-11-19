@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.config.middleware.use OliveBranch::Middleware,
                                         inflection: 'camel',
                                         exclude_response: lambda { |env|

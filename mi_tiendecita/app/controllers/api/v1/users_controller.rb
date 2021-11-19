@@ -13,7 +13,7 @@ class Api::V1::UsersController < ApiController
       token = encode_token(@user.id )
       render json: { user: @user, token: token }
     else
-      render json: { error: 'Invalid username or password' }
+      render json: { error: 'Invalid username or password' }, status: :bad_request
     end
   end
 
@@ -22,10 +22,10 @@ class Api::V1::UsersController < ApiController
     @user = User.find_by(email: params[:email])
 
     if @user&.authenticate(params[:password])
-      token = encode_token(@user.id )
+      token = encode_token(@user.id)
       render json: { user: @user, token: token }
     else
-      render json: { error: 'Invalid username or password' }
+      render json: { error: 'Invalid username or password' }, status: :unauthorized
     end
   end
 

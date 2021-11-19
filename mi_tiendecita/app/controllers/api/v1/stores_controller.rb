@@ -15,9 +15,9 @@ class Api::V1::StoresController < ApiController
     @store = Store.new(store_params)
 
     if @store.save
-      render json: { store: @store }
+      render json: { store: @store }, status: :created
     else
-      render json: { errors: @store.errors.messages }
+      render json: { errors: @store.errors.messages }, status: :bad_request
     end
   end
 
@@ -27,7 +27,7 @@ class Api::V1::StoresController < ApiController
     if @store.update(store_params)
       render json: { store: @store }
     else
-      render json: { errors: @store.errors.messages }
+      render json: { errors: @store.errors.messages }, status: :bad_request
     end
   end
 

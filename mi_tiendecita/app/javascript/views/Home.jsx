@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
+import { NewProductForm } from "_components";
 
 export default function Home() {
   return (
-    <div className="flex-col mt-4">
-      <div className="flex-1 bg-black text-white text-lg">Mi tiendecita</div>
-      <div>dsample asldknaksjdhak asjkhdhasm aksjdhasjdhaskjh a</div>
+    <div className="flex items-center justify-center h-screen">
+      <NewProductForm />
     </div>
   );
 }

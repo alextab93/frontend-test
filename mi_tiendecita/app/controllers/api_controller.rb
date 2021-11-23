@@ -5,7 +5,7 @@ class ApiController < ActionController::Base
 
   TIME_NOW = Time.now.to_i
 
-  def encode_token(user_id, expiry_after_days = 7)
+  def encode_token(user_id, expiry_after_days = 1)
     exp = TIME_NOW + expiry_after_days * 24 * 3600
     iat = TIME_NOW
     payload = { user_id: user_id, exp: exp, iat: iat }
@@ -34,6 +34,7 @@ class ApiController < ActionController::Base
 
     user_id = decoded_token[0]['user_id']
     @user = User.find_by(id: user_id)
+    # @user ||= (session[:current_user_id] && User.find_by(id: session[:current_user_id])) #User.find_by(id: user_id)
   end
 
   def logged_in?

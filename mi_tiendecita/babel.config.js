@@ -46,6 +46,25 @@ module.exports = function (api) {
       ],
     ].filter(Boolean),
     plugins: [
+      [
+        "module-resolver",
+        {
+          root: ["./app/javascript"],
+          extensions: [".js", ".jsx"],
+          alias: {
+            _assets: "./app/javascript/assets",
+            _components: "./app/javascript/components",
+            _constants: "./app/javascript/constants",
+            _helpers: "./app/javascript/helpers",
+            _hooks: "./app/javascript/hooks",
+            _interfaces: "./app/javascript/interfaces",
+            _mutations: "./app/javascript/mutations",
+            _queries: "./app/javascript/queries",
+            _services: "./app/javascript/services",
+            _utils: "./app/javascript/utils",
+          },
+        },
+      ],
       "babel-plugin-macros",
       "@babel/plugin-syntax-dynamic-import",
       isTestEnv && "babel-plugin-dynamic-import-node",

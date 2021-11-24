@@ -3,26 +3,21 @@ import { MailIcon, KeyIcon } from "@heroicons/react/solid";
 import { useQueryClient } from "react-query";
 
 import { Input, Button } from "_components";
-import { validEmail } from "_helpers/validation";
+// import { validEmail } from "_helpers/validations";
 import { useLogIn } from "_mutations";
 
-export default function LogIn() {
+export default function LogInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const queryClient = useQueryClient();
   const { mutateAsync: createSession } = useLogIn();
 
-  const [emailError, setEmailError] = useState(null);
-  const [passwordError, setPasswordError] = useState(null);
+  const [loginError, setLoginError] = useState(null);
 
   const onEmailChange = useCallback(
     (value) => {
       setEmail(value);
-      if (!validEmail(value)) {
-        setEmailError("Invalid email");
-      } else {
-        setEmailError(null);
-      }
+      setLoginError(null);
     },
     [setEmail]
   );
@@ -30,21 +25,20 @@ export default function LogIn() {
   const onPasswordChange = useCallback(
     (value) => {
       setPassword(value);
-      // if (!validPassword(value)) {
-      //   setPasswordError("Invalid password");
-      // } else {
-      //   setPasswordError(null);
-      // }
+      setLoginError(null);
     },
     [setPassword]
   );
 
   const onSubmitLogin = useCallback(async () => {
-    console.log("creating session");
-    await createSession({
-      email,
-      password,
-    });
+    try {
+      await createSession({
+        email,
+        password,
+      });
+    } catch (error) {
+      setLoginError(error.data[0]);
+    }
 
     queryClient.invalidateQueries("current-user");
   }, [email, password, createSession]);
@@ -63,9 +57,8 @@ export default function LogIn() {
             placeholder="you@example.com"
             value={email}
             onValueChange={onEmailChange}
-            hasError={emailError}
+            hasError={loginError}
           />
-          {emailError ? <Input.ErrorMessage message={emailError} /> : null}
         </Input.Group>
         <Input.Group>
           <Input.Label>Password</Input.Label>
@@ -79,11 +72,9 @@ export default function LogIn() {
             autoComplete="current-password"
             value={password}
             onValueChange={onPasswordChange}
-            hasError={passwordError}
+            hasError={loginError}
           />
-          {passwordError ? (
-            <Input.ErrorMessage message={passwordError} />
-          ) : null}
+          {loginError ? <Input.ErrorMessage message={loginError} /> : null}
         </Input.Group>
 
         <Button

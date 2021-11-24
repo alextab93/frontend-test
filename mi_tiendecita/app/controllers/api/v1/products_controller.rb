@@ -4,7 +4,7 @@ class Api::V1::ProductsController < ApiController
   before_action :authorized
 
   def index
-    @products = Product.where(store_id: params[:store_id])
+    @products = Product.where(store_id: params[:store_id]).order('id')
   end
 
   def show

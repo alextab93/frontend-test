@@ -1,5 +1,7 @@
 import React from "react";
 import clsx from "clsx";
+import PropTypes from "prop-types";
+import { noop } from "lodash";
 
 const BUTTON_CLASSES = {
   xs: "px-3 py-2 text-sm leading-4 font-medium",
@@ -26,21 +28,21 @@ const BUTTON_VARIANTS = {
   primary:
     "bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500",
   secondary:
-    "bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500",
+    "bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 hover:text-gray-500",
   error:
     "bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500",
   success:
-    "bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500",
+    "bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500",
   warning:
-    "bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500",
+    "bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500",
 };
 
-export default function Button({
+function Button({
   variant = "primary",
-  Icon,
+  Icon = null,
   iconPosition = "leading", // leading or trailing
   label,
-  onClick,
+  onClick = noop,
   size = "sm",
   rounded = false,
   stretched = false,
@@ -74,3 +76,22 @@ export default function Button({
     </button>
   );
 }
+
+Button.propTypes = {
+  variant: PropTypes.oneOf([
+    "primary",
+    "secondary",
+    "error",
+    "success",
+    "warning",
+  ]),
+  iconPosition: PropTypes.oneOf(["leading", "trailing"]),
+  label: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
+  size: PropTypes.oneOf(["xs", "sm", "md", "lg"]),
+  rounded: PropTypes.bool,
+  stretched: PropTypes.bool,
+  disabled: PropTypes.bool,
+};
+
+export default Button;

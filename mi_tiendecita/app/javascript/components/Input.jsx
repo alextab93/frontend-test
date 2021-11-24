@@ -105,27 +105,32 @@ function ImageUpload({
 }) {
   return (
     <ImageUploading value={images} onChange={onChange} dataURLKey="dataUrl">
-      {({ imageList, onImageUpload, onImageRemove, dragProps }) => (
+      {({ imageList, onImageUpload, onImageRemove, dragProps, isDragging }) => (
         <div
           className={clsx([
-            "mt-1 cursor-pointer flex justify-center border-2 border-gray-300 border-dashed rounded-md",
+            "mt-1 cursor-pointer flex justify-center border-2 border-dashed border-gray-300 rounded-md",
+            {
+              "border-indigo-300": isDragging,
+            },
             className,
           ])}
-          {...dragProps}
         >
           {imageList.length === 0 ? (
             <div
-              className="px-6 pt-5 pb-6 space-y-1 text-center"
+              className="flex px-6 pt-5 pb-6 w-full items-center justify-center"
               onClick={onImageUpload}
+              {...dragProps}
             >
-              <PhotographIcon className="mx-auto h-12 w-12 text-gray-400" />
-              <div className="flex text-sm text-gray-600">
-                <span className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
-                  {uploadText}
-                </span>
-                <p className="pl-1">{alternativeUploadText}</p>
+              <div className="flex-col space-y-1 text-center">
+                <PhotographIcon className="mx-auto h-12 w-12 text-gray-400" />
+                <div className="flex text-sm text-gray-600">
+                  <span className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                    {uploadText}
+                  </span>
+                  <p className="pl-1">{alternativeUploadText}</p>
+                </div>
+                <p className="text-xs text-gray-500">{subMessage}</p>
               </div>
-              <p className="text-xs text-gray-500">{subMessage}</p>
             </div>
           ) : (
             <div className="space-y-1 text-center p-4">

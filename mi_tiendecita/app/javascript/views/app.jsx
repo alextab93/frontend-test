@@ -10,15 +10,23 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import { useCurrentUser } from "_queries";
 
 import Home from "./Home";
-import LogIn from "./LogIn";
-import List from "./List";
+import LogInPage from "./LogInPage";
+import ProductsPage from "./ProductsPage";
+import ProductDetailPage from "./ProductDetailPage";
 
-function LoggedInRouter() {
+function AppRouter() {
   return (
     <Router>
       <Switch>
-        <Route exact path="/" component={Home} />
-        <Route path="/list" component={List} />
+        <Route path="/home" component={Home} />
+        <Route path="/store/:storeId/products" component={ProductsPage} />
+        <Route
+          path="/store/:storeId/products/:productId"
+          component={ProductDetailPage}
+        />
+        <Route path="*">
+          <Redirect to="/home" />
+        </Route>
       </Switch>
     </Router>
   );
@@ -28,8 +36,10 @@ function AuthRouter() {
   return (
     <Router>
       <Switch>
-        <Route exact path="/" component={LogIn} />
-        <Route path="/login" component={LogIn} />
+        <Route path="/login" component={LogInPage} />
+        {/* <Route path="*">
+          <Redirect to="/login" />
+        </Route> */}
       </Switch>
     </Router>
   );
@@ -37,13 +47,15 @@ function AuthRouter() {
 
 function MainRouter() {
   const { data: currentUser } = useCurrentUser();
-  return currentUser ? <LoggedInRouter /> : <AuthRouter />;
+  return currentUser ? <AppRouter /> : <AuthRouter />;
 }
 
 export default function MiTiendecita({ queryClient }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <MainRouter />
+      <React.Suspense fallback={<div>Loading....</div>}>
+        <MainRouter />
+      </React.Suspense>
       <ReactQueryDevtools />
     </QueryClientProvider>
   );

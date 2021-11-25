@@ -3,14 +3,15 @@ import { MailIcon, KeyIcon } from "@heroicons/react/solid";
 import { useQueryClient } from "react-query";
 
 import { Input, Button } from "_components";
-// import { validEmail } from "_helpers/validations";
 import { useLogIn } from "_mutations";
+import { useNavigation } from "_hooks";
 
 export default function LogInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const queryClient = useQueryClient();
   const { mutateAsync: createSession } = useLogIn();
+  const navigation = useNavigation();
 
   const [loginError, setLoginError] = useState(null);
 
@@ -36,11 +37,11 @@ export default function LogInPage() {
         email,
         password,
       });
+      navigation.navigate("/home");
+      queryClient.invalidateQueries("session");
     } catch (error) {
       setLoginError(error.data[0]);
     }
-
-    queryClient.invalidateQueries("current-user");
   }, [email, password, createSession]);
 
   return (

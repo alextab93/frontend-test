@@ -4,13 +4,15 @@ class Api::V1::UsersController < ApiController
   before_action :authorized, only: %i[show index logout]
 
   def show
+    logged_in_user
   end
 
   # REGISTER
   def create
     @user = User.create(user_params)
     if @user.valid?
-      token = encode_token(@user.id )
+      token = encode_token(@user.id)
+      session[:current_user_id] = @user.id
       render json: { user: @user, token: token }
     else
       render json: { errors: ['Invalid username or password'] }, status: :bad_request
@@ -23,6 +25,7 @@ class Api::V1::UsersController < ApiController
 
     if @user&.authenticate(params[:password])
       token = encode_token(@user.id)
+      session[:current_user_id] = @user.id
       render json: { user: @user, token: token }
     else
       render json: { errors: ['Invalid username or password'] }, status: :unauthorized
@@ -31,6 +34,7 @@ class Api::V1::UsersController < ApiController
 
   def logout
     @user = nil
+    session[:current_user_id] = nil
     render json: { message: 'Logged out' }
   end
 

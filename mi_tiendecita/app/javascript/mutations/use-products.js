@@ -10,17 +10,13 @@ async function createProduct({
   price,
   image,
 }) {
-  const headers = {
-    Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2Mzc5Nzc3MDEsImlhdCI6MTYzNzM3MjkwMX0.s6GD0uofYlzVmCLq1d10V4CAfHIjuymST6RORTZTV6w",
-  };
   let imageUrl = "";
 
   if (image?.dataUrl) {
     imageUrl = await uploadToService(image.file);
   }
 
-  const { data } = create(
+  const { data } = await create(
     "product",
     {
       parentName: "store",
@@ -33,7 +29,7 @@ async function createProduct({
         imageUrl,
       },
     },
-    { headers }
+    { withAuth: true }
   );
 
   return data;
@@ -44,16 +40,12 @@ export function useCreateProduct() {
 }
 
 async function deleteProduct({ productId }) {
-  const headers = {
-    Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2Mzc5Nzc3MDEsImlhdCI6MTYzNzM3MjkwMX0.s6GD0uofYlzVmCLq1d10V4CAfHIjuymST6RORTZTV6w",
-  };
-  const { data } = destroy(
+  const { data } = await destroy(
     "product",
     {
       resourceId: productId,
     },
-    { headers }
+    { withAuth: true }
   );
 
   return data;
@@ -64,11 +56,6 @@ export function useDeleteProduct() {
 }
 
 async function updateProduct({ productId, product, newImage, oldImage }) {
-  const headers = {
-    Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2Mzc5Nzc3MDEsImlhdCI6MTYzNzM3MjkwMX0.s6GD0uofYlzVmCLq1d10V4CAfHIjuymST6RORTZTV6w",
-  };
-
   let imageUrl = oldImage;
 
   if (newImage) {
@@ -77,7 +64,7 @@ async function updateProduct({ productId, product, newImage, oldImage }) {
 
   const updatedProduct = { ...product, imageUrl };
 
-  const { data } = update(
+  const { data } = await update(
     "product",
     {
       resourceId: productId,
@@ -85,7 +72,7 @@ async function updateProduct({ productId, product, newImage, oldImage }) {
         product: updatedProduct,
       },
     },
-    { headers }
+    { withAuth: true }
   );
 
   return data;

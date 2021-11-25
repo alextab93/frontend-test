@@ -17,6 +17,7 @@ export default function Home() {
           <div className="flex-col space-y-2">
             {stores.map((store) => (
               <div
+                key={store.id}
                 className="flex px-6 py-2 border border-gray-300 rounded-xl hover:bg-gray-100 cursor-pointer"
                 onClick={() =>
                   navigation.navigate(`store/${store.id}/products`)

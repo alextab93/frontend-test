@@ -1,4 +1,5 @@
 import { tableize, pluralize, singularize } from "inflected";
+import authHeaders from "_helpers/auth";
 
 const BASE_URL = "http://localhost:3000/api/v1/";
 
@@ -107,6 +108,7 @@ export const HTTP_STATUS = {
 export async function api(path, options = {}) {
   const headers = {
     ...(options.headers ?? {}),
+    ...(options.withAuth ? authHeaders() : {}),
     "Content-Type": "application/json; charset=utf-8",
     Accept: "application/json",
   };

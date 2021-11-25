@@ -33,12 +33,15 @@ class ApiController < ActionController::Base
     return unless decoded_token
 
     user_id = decoded_token[0]['user_id']
+    session[:current_user_id] = user_id
     @user = User.find_by(id: user_id)
-    # @user ||= (session[:current_user_id] && User.find_by(id: session[:current_user_id])) #User.find_by(id: user_id)
+    @user
   end
 
   def logged_in?
-    !!logged_in_user
+    return unless decoded_token
+
+    session[:current_user_id] == decoded_token[0]['user_id']
   end
 
   def authorized

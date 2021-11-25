@@ -1,4 +1,5 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useCallback, useMemo } from "react";
+import { useQueryClient } from "react-query";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { ChevronLeftIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import { PlusSmIcon } from "@heroicons/react/solid";
@@ -6,7 +7,9 @@ import { noop } from "lodash";
 import clsx from "clsx";
 
 import Button from "./Button";
-import { useCurrentUser } from "_queries";
+import { useCurrentUser } from "_hooks";
+import { useLogOut } from "_mutations";
+import { useNavigation } from "_hooks";
 
 export default function NavBar({
   actionButtonLabel,
@@ -15,12 +18,30 @@ export default function NavBar({
   headingTitle,
   sticky = true,
 }) {
-  const { data: user } = useCurrentUser();
-  const userNavigation = [
-    { name: "Your Profile", action: () => console.log("asdasdasdas") },
-    { name: "Settings", action: noop },
-    { name: "Sign out", action: noop },
-  ];
+  const user = useCurrentUser();
+  const { mutateAsync: logOut } = useLogOut();
+  const queryClient = useQueryClient();
+  const navigation = useNavigation();
+
+  const onEndSession = useCallback(async () => {
+    try {
+      await logOut();
+      navigation.navigate("/login");
+      queryClient.invalidateQueries("session");
+    } catch (error) {
+      console.log(error);
+    }
+  }, [queryClient]);
+
+  const userNavigation = useMemo(
+    () => [
+      { name: "Your Profile", action: noop }, // To be implemented
+      { name: "Settings", action: noop }, // To be implemented
+      { name: "Sign out", action: () => onEndSession() },
+    ],
+    [onEndSession]
+  );
+
   return (
     <Disclosure
       as="nav"
@@ -123,13 +144,12 @@ export default function NavBar({
               <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <Disclosure.Button
                   as="button"
-                  onClick={handleBack}
                   className={clsx([
                     "text-gray-300 hover:bg-gray-700 hover:text-white",
                     "block px-3 py-2 rounded-md text-base font-medium",
                   ])}
                 >
-                  Go to stores list
+                  <div onClick={handleBack}>Go to stores list</div>
                 </Disclosure.Button>
               </div>
             ) : null}
@@ -156,11 +176,9 @@ export default function NavBar({
                 {userNavigation.map((item) => (
                   <Disclosure.Button
                     key={item.name}
-                    as="a"
-                    onClick={item.action}
                     className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700"
                   >
-                    {item.name}
+                    <div onClick={item.action}>{item.name}</div>
                   </Disclosure.Button>
                 ))}
               </div>

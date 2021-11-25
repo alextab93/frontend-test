@@ -49,6 +49,7 @@ function ProductForm({ product, onSubmitForm = noop }) {
           placeholder="Product's name"
           value={name}
           onValueChange={setName}
+          disabled={isSubmitting}
         />
       </Input.Group>
       <Input.Group>
@@ -59,6 +60,7 @@ function ProductForm({ product, onSubmitForm = noop }) {
           type="text"
           value={description}
           onValueChange={setDescription}
+          disabled={isSubmitting}
         />
       </Input.Group>
       <Input.Group>
@@ -69,6 +71,7 @@ function ProductForm({ product, onSubmitForm = noop }) {
           placeholder="Product's price in USD"
           value={price}
           onValueChange={setPrice}
+          disabled={isSubmitting}
         />
       </Input.Group>
       <Input.Group>
@@ -79,6 +82,7 @@ function ProductForm({ product, onSubmitForm = noop }) {
           placeholder="e.g. LGA123"
           value={code}
           onValueChange={setCode}
+          disabled={isSubmitting}
         />
       </Input.Group>
       <Input.Group>
@@ -88,7 +92,7 @@ function ProductForm({ product, onSubmitForm = noop }) {
       <Button
         stretched
         rounded
-        label="Submit"
+        label={isSubmitting ? "Submitting..." : "Submit"}
         onClick={onSubmit}
         disabled={!isValid || isSubmitting}
       />

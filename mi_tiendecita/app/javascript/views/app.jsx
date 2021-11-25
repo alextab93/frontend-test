@@ -19,11 +19,11 @@ function AppRouter() {
     <Router>
       <Switch>
         <Route path="/home" component={Home} />
-        <Route path="/store/:storeId/products" component={ProductsPage} />
         <Route
           path="/store/:storeId/products/:productId"
           component={ProductDetailPage}
         />
+        <Route path="/store/:storeId/products" component={ProductsPage} />
         <Route path="*">
           <Redirect to="/home" />
         </Route>

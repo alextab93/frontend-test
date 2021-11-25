@@ -13,6 +13,7 @@ end
               password: 'pass123',
               first_name: Faker::Name.first_name,
               last_name: Faker::Name.last_name,
+              avatar_url: Faker::Avatar.image,
               store: store)
   rand(3..10).times do
     seed_product(store)

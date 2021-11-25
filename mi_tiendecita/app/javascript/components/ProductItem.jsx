@@ -67,33 +67,32 @@ export default function ProductItem({ product, onItemClick = noop }) {
     }
   }, [deleteProduct, productId, setDeleteModalOpen, queryClient]);
 
-  const imageHref = imageUrl
+  const imageSrc = imageUrl
     ? imageUrl
     : "https://www.sinrumbofijo.com/wp-content/uploads/2016/05/default-placeholder.png";
 
   return (
-    <div className="px-4 py-4 sm:px-6 flex justify-between max-w-screen-md mx-auto">
+    <div className="px-4 py-4 sm:px-6 flex flex-col md:flex-row justify-between max-w-screen-md mx-auto">
       <div
         className="flex justify-between cursor-pointer"
         onClick={onItemClick}
       >
         <div className="flex">
-          <img src={imageHref} alt={`${name} image`} width="100" />
+          <img src={imageSrc} alt={`${name} image`} width="100" />
           <div className="flex-col space-y-1 ml-4 pt-2 items-start">
-            <div className="flex items-center space-x-1 justify-end">
+            <div className="flex flex-col md:flex-row items-center space-x-1 justify-end">
               <span className="text-md">{name}</span>
               <span className="text-xs leading-4 text-gray-500">
                 (#code: {code})
               </span>
             </div>
-            <div className="text-xs text-gray-400">{description}</div>
             <div className="text-sm font-semibold">
-              {convertNumberToDollarWithCents(price)} USD
+              $ {convertNumberToDollarWithCents(price)}
             </div>
           </div>
         </div>
       </div>
-      <div className="space-x-2">
+      <div className="mt-4 md:mt-0 space-x-2">
         <Button
           size="xs"
           label="Edit"

@@ -31,6 +31,7 @@ function Text({
   hasError,
   multiline = false,
   rows = 3,
+  disabled = false,
   ...props
 }) {
   return (
@@ -59,10 +60,12 @@ function Text({
               "focus:ring-indigo-500 focus:border-indigo-500": !hasError,
               "border-red-300 focus:ring-red-500 focus:border-red-500":
                 hasError,
+              "text-gray-400": disabled,
             },
           ])}
           value={value}
           onChange={(e) => onValueChange(e.target.value)}
+          disabled={disabled}
         />
       ) : (
         <input
@@ -74,12 +77,14 @@ function Text({
               "focus:ring-indigo-500 focus:border-indigo-500": !hasError,
               "border-red-300 focus:ring-red-500 focus:border-red-500":
                 hasError,
+              "text-gray-400": disabled,
             },
             className,
           ])}
           placeholder={placeholder}
           value={value}
           onChange={(e) => onValueChange(e.target.value)}
+          disabled={disabled}
         />
       )}
 

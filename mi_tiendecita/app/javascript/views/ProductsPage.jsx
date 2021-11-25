@@ -2,14 +2,16 @@ import React, { useCallback, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQueryClient } from "react-query";
 
-import { ProductItem, Heading, Modal, ProductForm } from "_components";
+import { ProductItem, Modal, ProductForm, NavBar } from "_components";
 import { useProducts, useStore } from "_queries";
 import { useCreateProduct } from "_mutations";
+import { useNavigation } from "_hooks";
 
 export default function ProductsPage() {
   const { storeId } = useParams();
   const [addProductModalOpen, setAddProductModalOpen] = useState(false);
   const queryClient = useQueryClient();
+  const navigation = useNavigation();
 
   const { data: products } = useProducts(storeId);
   const { data: store } = useStore(storeId);
@@ -20,7 +22,7 @@ export default function ProductsPage() {
   }, []);
 
   const onSubmitNewProduct = useCallback(async (product, images) => {
-    const image = images[0];
+    const image = images.length > 0 ? images[0] : "";
     try {
       await createProduct({
         storeId,
@@ -36,17 +38,22 @@ export default function ProductsPage() {
 
   return (
     <div className="flex-col">
-      <Heading
-        title={`${store.name}'s products`}
-        subTitle={`${store.description ?? "List of products for the store"}`}
-        buttonLabel="Add new product"
-        onButtonClick={() => setAddProductModalOpen(true)}
-        sticky
+      <NavBar
+        headingTitle={`${store.name}'s products`}
+        actionButtonLabel="New product"
+        onActionButtonClick={() => setAddProductModalOpen(true)}
+        handleBack={() => navigation.navigate("home")}
       />
       <div className="bg-white shadow overflow-hidden sm:rounded-md">
         <ul role="list" className="divide-y divide-gray-200">
           {products.map((product) => (
-            <ProductItem key={product.id} product={product} />
+            <ProductItem
+              key={product.id}
+              product={product}
+              onItemClick={() =>
+                navigation.navigate(`/store/${storeId}/products/${product.id}`)
+              }
+            />
           ))}
         </ul>
       </div>

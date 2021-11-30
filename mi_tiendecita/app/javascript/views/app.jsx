@@ -29,6 +29,9 @@ function AppRouter() {
         <Route exact path="/">
           <Redirect to="/home" />
         </Route>
+        <Route path="/*">
+          <Redirect to="/home" />
+        </Route>
       </Switch>
     </Router>
   );
@@ -40,6 +43,9 @@ function AuthRouter() {
       <Switch>
         <Route exact path="/login" component={LogInPage} />
         <Route exact path="/">
+          <Redirect to="/login" />
+        </Route>
+        <Route path="/*">
           <Redirect to="/login" />
         </Route>
       </Switch>

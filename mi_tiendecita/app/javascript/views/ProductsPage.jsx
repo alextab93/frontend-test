@@ -42,7 +42,7 @@ export default function ProductsPage() {
         headingTitle={`${store.name}'s products`}
         actionButtonLabel="New product"
         onActionButtonClick={() => setAddProductModalOpen(true)}
-        handleBack={() => navigation.navigate("home")}
+        handleBack={() => navigation.navigate("/home")}
       />
       <div className="bg-white shadow overflow-hidden sm:rounded-md">
         <ul role="list" className="divide-y divide-gray-200">

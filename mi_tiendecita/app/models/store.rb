@@ -2,7 +2,8 @@
 
 class Store < ApplicationRecord
   has_many :products
-  has_many :users
+  has_many :store_users
+  has_many :users, through: :store_users
 end
 
 # == Schema Information

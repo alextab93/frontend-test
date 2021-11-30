@@ -4,7 +4,7 @@ class Api::V1::StoresController < ApiController
   before_action :authorized
 
   def index
-    @stores = Store.all.order('id')
+    @stores = User.find(session[:current_user_id]).stores.order('id')
   end
 
   def show

@@ -24,12 +24,9 @@ function AppRouter() {
           path="/store/:storeId/products/:productId"
           component={ProductDetailPage}
         />
-        <Route exact path="/store/:storeId/products" component={ProductsPage} />
+        <Route path="/store/:storeId/products" component={ProductsPage} />
         <Route exact path="/home" component={Home} />
         <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
-        <Route path="/*">
           <Redirect to="/home" />
         </Route>
       </Switch>
@@ -43,9 +40,6 @@ function AuthRouter() {
       <Switch>
         <Route exact path="/login" component={LogInPage} />
         <Route exact path="/">
-          <Redirect to="/login" />
-        </Route>
-        <Route path="/*">
           <Redirect to="/login" />
         </Route>
       </Switch>
